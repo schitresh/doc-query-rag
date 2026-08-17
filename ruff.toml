@@ -1,0 +1,41 @@
+line-length = 100
+indent-width = 4
+target-version = "py313"
+
+[lint]
+# E: pycodestyle errors
+# F: pyflakes
+# I: isort
+# N: naming
+# B: flake8-bugbear
+# C4: flake8-comprehensions
+# UP: pyupgrade
+# ICN: flake8-import-conventions
+# RUF: Ruff-specific rules
+select = ["E", "F", "I", "N", "B", "C4", "UP", "ICN", "RUF"]
+ignore = ["E501"]  # Line length is handled by formatter
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = true
+docstring-code-format = false
+
+# Import sorting
+[lint.isort]
+case-sensitive = true
+force-sort-within-sections = true
+combine-as-imports = true
+known-first-party = ["app"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+# Import conventions
+[lint.flake8-import-conventions]
+banned-from = ["datetime", "typing"]
+
+[lint.flake8-import-conventions.extend-aliases]
+"datetime" = "dt"
+"typing" = "t"
+"pandas" = "pd"
+"numpy" = "np"

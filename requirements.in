@@ -1,0 +1,13 @@
+# Framework & Server
+fastapi
+uvicorn
+pydantic-settings
+
+# Database & Vector
+psycopg2-binary
+
+# Document Handlers
+pypdf
+
+# LLM
+google-genai
