@@ -1,9 +1,9 @@
 from google import genai
 
-from app.config import LlmSettings
+from app.config import llm_settings
 
-CLIENT = genai.Client(api_key=LlmSettings.gemini_api_key)
-EMBEDDING_MODEL = LlmSettings.gemini_embedding_model
+CLIENT = genai.Client(api_key=llm_settings.gemini_api_key)
+EMBEDDING_MODEL = llm_settings.gemini_embedding_model
 
 
 def generate_embedding_batch(chunks: list[str]) -> list[list[float]]:

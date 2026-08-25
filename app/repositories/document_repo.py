@@ -1,3 +1,5 @@
+import typing as t
+
 from psycopg2.extensions import connection
 
 
@@ -23,7 +25,7 @@ def save_document_chunks(
 
 def search_similar_chunks(
     connection: connection, query_embedding: list[float], top_k: int = 5
-) -> list[dict[str, any]]:
+) -> list[dict[str, t.Any]]:
     """Performs cosine distance search to retrieve the top_k relevant chunks."""
     query = """
         SELECT id, document_name, chunk_text, (embedding <=> %s::vector) as distance

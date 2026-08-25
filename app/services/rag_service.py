@@ -1,12 +1,14 @@
+import typing as t
+
 from google import genai
 
-from app.config import LlmSettings
+from app.config import llm_settings
 
-CLIENT = genai.Client(api_key=LlmSettings.gemini_api_key)
-GEMINI_MODEL = LlmSettings.gemini_model
+CLIENT = genai.Client(api_key=llm_settings.gemini_api_key)
+GEMINI_MODEL = llm_settings.gemini_model
 
 
-def generate_rag_answer(query: str, retrieved_chunks: list[dict[str, any]]) -> str:
+def generate_rag_answer(query: str, retrieved_chunks: list[dict[str, t.Any]]) -> str:
     if not retrieved_chunks:
         return "No relevant information found."
 

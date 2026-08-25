@@ -14,8 +14,10 @@ router = APIRouter(prefix="/documents", tags=["Documents"])
 DatabaseDependency = t.Annotated[connection, Depends(get_db)]
 
 
-@router.get("/upload")
-async def upload_document(file: t.Annotated[UploadFile, File(...)], db: DatabaseDependency = None):
+@router.post("/upload")
+async def upload_document(
+    file: t.Annotated[UploadFile, File(...)], db: DatabaseDependency = None
+) -> dict[str, t.Any]:
     try:
         chunks = parse_and_chunk_file(file=file.file, filename=file.filename)
         if not chunks:
@@ -44,7 +46,7 @@ async def search_documents(query: str, top_k: int = 5, db: DatabaseDependency = 
 @router.get("/query")
 async def query_documents(
     query: str, top_k: int = 5, db: DatabaseDependency = None
-) -> dict[str, any]:
+) -> dict[str, t.Any]:
     if not query.strip():
         raise HTTPException(status_code=400, detail="Query string is empty")
 

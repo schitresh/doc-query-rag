@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.routes import document_router
+from app.routes.document_router import router as document_router
 
 app = FastAPI(title="Document Query RAG", version="1.0.0")
 
