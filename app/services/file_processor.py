@@ -1,7 +1,8 @@
 import os
 import typing as t
 
-from app.services import pdf_parser, text_chunker
+from app.services import text_chunker
+from app.services.file_parsers import pdf_parser
 
 PARSERS = {".pdf": pdf_parser.extract_text}
 
