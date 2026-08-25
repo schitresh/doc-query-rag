@@ -4,19 +4,23 @@ from psycopg2.extensions import connection
 
 
 def save_document_chunks(
-    connection: connection, document_name: str, chunks: list[str], embeddings: list[list[float]]
+    connection: connection,
+    document_name: str,
+    chunks: list[str],
+    embeddings: list[list[float]],
+    embedding_model: str,
 ):
     """Inserts a batch of text chunks and their embeddings into PostgreSQL."""
     query = """
-        INSERT INTO document_chunks (document_name, chunk_text, embedding)
-        VALUES (%s, %s, %s)
+        INSERT INTO document_chunks (document_name, chunk_text, embedding, embedding_model)
+        VALUES (%s, %s, %s, %s)
     """
 
     with connection:
         with connection.cursor() as cursor:
             records = []
             for chunk, embedding in zip(chunks, embeddings):
-                records.append((document_name, chunk, str(embedding)))
+                records.append((document_name, chunk, embedding, embedding_model))
 
             cursor.executemany(query, records)
 
@@ -35,8 +39,8 @@ def search_similar_chunks(
     """
 
     with connection.cursor() as cursor:
-        cursor.execute(query, (str(query_embedding), top_k))
-        rows = cursor.fetch_all()
+        cursor.execute(query, (query_embedding, top_k))
+        rows = cursor.fetchall()
         results = []
 
         for row in rows:

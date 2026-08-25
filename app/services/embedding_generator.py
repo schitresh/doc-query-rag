@@ -13,5 +13,9 @@ def generate_embedding_batch(chunks: list[str]) -> list[list[float]]:
 
 def generate_embedding(chunk):
     """Generates a 768-dimensional vector embedding for a single text string."""
-    response = CLIENT.models.embed_content(model=EMBEDDING_MODEL, contents=chunk)
+    response = CLIENT.models.embed_content(
+        model=EMBEDDING_MODEL,
+        contents=chunk,
+        config=genai.types.EmbedContentConfig(output_dimensionality=768),
+    )
     return response.embeddings[0].values

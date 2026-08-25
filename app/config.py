@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 class LlmSettings(BaseSettings):
     gemini_api_key: str
     gemini_model: str
-    gemini_embedding_model: str = getenv("EMBEDDING_MODEL", "text-embedding-004")
+    gemini_embedding_model: str = getenv("EMBEDDING_MODEL", "gemini-embedding-001")
 
 
 settings = Settings()

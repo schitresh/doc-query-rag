@@ -3,6 +3,7 @@ import typing as t
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from psycopg2.extensions import connection
 
+from app.config import llm_settings
 from app.database import get_db
 from app.repositories.document_repo import save_document_chunks, search_similar_chunks
 from app.services.embedding_generator import generate_embedding, generate_embedding_batch
@@ -23,7 +24,9 @@ async def upload_document(
         if not chunks:
             raise HTTPException(status_code=400, detail="Document has no extractable text.")
         embeddings = generate_embedding_batch(chunks)
-        save_document_chunks(db, file.filename, chunks, embeddings)
+        save_document_chunks(
+            db, file.filename, chunks, embeddings, llm_settings.gemini_embedding_model
+        )
 
         return {"status": "success", "filename": file.filename}
     except ValueError as e:
