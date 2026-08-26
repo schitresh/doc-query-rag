@@ -1,10 +1,12 @@
-# The most natural ending will be a paragraph break, then a newline, then the end of a line,
-# and lastly a space. Hence, prioritize separators accordingly.
-SEPARATORS = ("\n\n", "\n", ". ", "? ", "! ", " ")
+# The most natural ending will be a a newline, then the end of a line, and lastly a space. Hence,
+# prioritize separators accordingly.
+SEPARATORS = ("\n", ". ", "? ", "! ", " ")
 
 
 def chunk_text(text: str, chunk_size: int = 1000, chunk_overlap: int = 200) -> list[str]:
     """Generic text chunker using a sliding window algorithm."""
+    if not text or not text.strip():
+        return []
     if chunk_size <= chunk_overlap:
         raise ValueError("chunk_overlap must be strictly smaller than chunk_size")
 

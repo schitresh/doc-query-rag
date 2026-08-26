@@ -1,10 +1,6 @@
-import os
 import typing as t
 
-from app.services import text_chunker
-from app.services.file_parsers import pdf_parser
-
-PARSERS = {".pdf": pdf_parser.extract_text}
+from app.file_handler import chunker, parser
 
 
 def parse_and_chunk_file(
@@ -19,10 +15,5 @@ def parse_and_chunk_file(
     relevant queries.
     """
 
-    _, ext = os.path.splitext(filename.lower())
-    parser = PARSERS.get(ext)
-    if not parser:
-        raise ValueError(f"Unsupported file type: {ext}")
-
-    raw_text = parser(file)
-    return text_chunker.chunk_text(raw_text, chunk_size, chunk_overlap)
+    raw_text = parser.parse_file(file)
+    return chunker.chunk_text(raw_text, chunk_size, chunk_overlap)
