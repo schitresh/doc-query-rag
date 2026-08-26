@@ -1,38 +1,16 @@
 import typing as t
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, HTTPException
 from psycopg2.extensions import connection
 
-from app.config import llm_settings
 from app.database import get_db
-from app.repositories.document_repo import save_document_chunks, search_similar_chunks
-from app.services.embedding_generator import generate_embedding, generate_embedding_batch
-from app.services.file_processor import parse_and_chunk_file
-from app.services.rag_service import generate_rag_answer
+from app.rag_service.content_generator import generate_rag_answer
+from app.rag_service.embedding_generator import generate_embedding
+from app.rag_service.repo import search_similar_chunks
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
 
 DatabaseDependency = t.Annotated[connection, Depends(get_db)]
-
-
-@router.post("/upload")
-async def upload_document(
-    file: t.Annotated[UploadFile, File(...)], db: DatabaseDependency = None
-) -> dict[str, t.Any]:
-    try:
-        chunks = parse_and_chunk_file(file=file.file, filename=file.filename)
-        if not chunks:
-            raise HTTPException(status_code=400, detail="Document has no extractable text.")
-        embeddings = generate_embedding_batch(chunks)
-        save_document_chunks(
-            db, file.filename, chunks, embeddings, llm_settings.gemini_embedding_model
-        )
-
-        return {"status": "success", "filename": file.filename}
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e)) from e
-    except Exception:
-        raise HTTPException(status_code=500, detail="Processing failed") from None
 
 
 @router.get("/search")

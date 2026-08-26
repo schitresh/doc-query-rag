@@ -4,7 +4,9 @@ uvicorn
 pydantic-settings
 
 # Database & Vector
+pgvector
 psycopg2-binary
+sqlalchemy
 
 # Document Handlers
 pypdf
