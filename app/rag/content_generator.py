@@ -4,11 +4,12 @@ from google import genai
 
 from app.config import llm_settings
 
-CLIENT = genai.Client(api_key=llm_settings.gemini_api_key)
 GEMINI_MODEL = llm_settings.gemini_model
 
+client = genai.Client(api_key=llm_settings.gemini_api_key)
 
-def generate_rag_answer(query: str, retrieved_chunks: list[dict[str, t.Any]]) -> str:
+
+def generate_answer(question: str, retrieved_chunks: list[dict[str, t.Any]]) -> str:
     if not retrieved_chunks:
         return "No relevant information found."
 
@@ -26,9 +27,9 @@ def generate_rag_answer(query: str, retrieved_chunks: list[dict[str, t.Any]]) ->
         "3. If the answer is not contained within the context, respond with: "
         "'No relevant information found.'"
     )
-    prompt = f"Context:\n{context}\n\nQuestion: {query}"
+    prompt = f"Context:\n{context}\n\nQuestion: {question}"
 
-    response = CLIENT.models.generate_content(
+    response = client.models.generate_content(
         model=GEMINI_MODEL, contents=prompt, config={"system_instruction": system_instruction}
     )
     return response.text
