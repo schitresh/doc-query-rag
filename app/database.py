@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.config import settings
@@ -23,7 +23,7 @@ def init_db():
 
 def create_vector_extension():
     with engine.connect() as conn:
-        conn.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+        conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
         conn.commit()
 
 

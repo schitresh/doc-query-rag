@@ -30,5 +30,3 @@ async def upload_document(file: t.Annotated[UploadFile, File(...)], db: Database
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception:
         raise HTTPException(status_code=500, detail="Processing failed") from None
-    finally:
-        file.close()

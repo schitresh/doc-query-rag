@@ -15,5 +15,5 @@ def parse_and_chunk_file(
     relevant queries.
     """
 
-    raw_text = parser.parse_file(file)
+    raw_text = parser.parse_file(file, filename)
     return chunker.chunk_text(raw_text, chunk_size, chunk_overlap)

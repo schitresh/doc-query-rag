@@ -8,9 +8,11 @@ class QueryRequest(BaseModel):
 
 class SourceChunk(BaseModel):
     document_name: str
-    chunk_text: str
+    snippet: str
+    score: float
 
 
 class QueryResponse(BaseModel):
+    question: str
     answer: str
     sources: list[SourceChunk]
