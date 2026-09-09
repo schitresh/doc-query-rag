@@ -20,7 +20,9 @@ async def query(payload: QueryRequest, db: DatabaseDependency = None):
         raise HTTPException(status_code=400, detail="Question string is empty")
 
     query_vector = generate_embedding(payload.question)
-    matching_chunks = search_similar_chunks(db, query_vector, top_k=payload.top_k)
+    matching_chunks = search_similar_chunks(
+        db, query_vector, top_k=payload.top_k, folder_id=payload.folder_id
+    )
 
     sources = []
     for chunk in matching_chunks:

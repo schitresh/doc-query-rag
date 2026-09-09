@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class QueryRequest(BaseModel):
     question: str
+    folder_id: int | None
     top_k: int = 5
 
 
