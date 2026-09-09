@@ -21,7 +21,7 @@ async def query(payload: QueryRequest, db: DatabaseDependency = None):
 
     query_vector = generate_embedding(payload.question)
     matching_chunks = search_similar_chunks(
-        db, query_vector, top_k=payload.top_k, folder_id=payload.folder_id
+        db, query_vector, folder_id=payload.folder_id, top_k=payload.top_k
     )
 
     sources = []
