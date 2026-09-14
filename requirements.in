@@ -14,3 +14,6 @@ python-multipart
 
 # LLM
 google-genai
+
+# Frontend
+streamlit

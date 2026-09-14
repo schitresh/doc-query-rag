@@ -22,6 +22,6 @@ app.include_router(folders_router)
 app.include_router(rag_router)
 
 
-@app.get("/")
+@app.get("/health")
 def health_check():
     return {"status": "healthy"}
