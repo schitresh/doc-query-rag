@@ -3,8 +3,9 @@ import typing as t
 import streamlit as st
 
 
-def render_chat_workspace(messages: list[dict[str, t.Any]]) -> str | None:
+def render_chat_workspace(folder_name: str, messages: list[dict[str, t.Any]]) -> str | None:
     st.header("Chat")
+    st.caption(f"Query about the documents of {folder_name}")
 
     for message in messages:
         with st.chat_message(message["type"]):
