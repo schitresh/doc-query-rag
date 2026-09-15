@@ -16,7 +16,6 @@ DatabaseDependency = t.Annotated[Session, Depends(get_db)]
 
 @router.post("/query", response_model=QueryResponse)
 async def query(payload: QueryRequest, db: DatabaseDependency = None):
-    return {"question": "question", "answer": "answer", "sources": []}
     if not payload.question.strip():
         raise HTTPException(status_code=400, detail="Question string is empty")
 
