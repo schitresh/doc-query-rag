@@ -39,6 +39,6 @@ def list_documents(db: Session, folder_id: int | None) -> list[Document]:
     query = db.query(Document)
 
     if folder_id is not None:
-        query.filter(Document.folder_id == folder_id)
+        query = query.filter(Document.folder_id == folder_id)
 
     return query.all()

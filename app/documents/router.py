@@ -15,6 +15,11 @@ router = APIRouter(prefix="/documents", tags=["Documents"])
 DatabaseDependency = t.Annotated[Session, Depends(get_db)]
 
 
+@router.get("", response_model=list[DocumentResponse])
+async def list_documents(folder_id: int | None, db: DatabaseDependency = None):
+    return repo.list_documents(db, folder_id)
+
+
 @router.post("/upload", response_model=DocumentUploadResponse)
 async def upload_document(
     file: t.Annotated[UploadFile, File(...)], folder_id: int | None, db: DatabaseDependency = None
@@ -34,8 +39,3 @@ async def upload_document(
         raise HTTPException(status_code=400, detail=str(e)) from e
     # except Exception:
     #     raise HTTPException(status_code=500, detail="Processing failed") from None
-
-
-@router.get("/list", response_model=list[DocumentResponse])
-async def list_documents(folder_id: int | None, db: DatabaseDependency = None):
-    return repo.list_documents(db, folder_id)
