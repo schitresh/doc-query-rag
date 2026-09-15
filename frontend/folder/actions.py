@@ -12,3 +12,12 @@ def display_folder_list():
     if selected_folder is not None:
         state.set_active_folder(selected_folder)
         st.rerun()
+
+
+def create_folder(folder_name: str):
+    try:
+        service.create_folder(folder_name)
+        st.success(f"Folder '{folder_name}' created!")
+        st.rerun()
+    except Exception as err:
+        st.error(f"Could not create folder: {err}")

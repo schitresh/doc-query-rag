@@ -8,4 +8,4 @@ def fetch_folders() -> list[dict[str, t.Any]]:
 
 
 def create_folder(name: str) -> dict[str, t.Any]:
-    return api_client.post("/folders", json={"name": name})
+    return api_client.post("/folders", params={"name": name})
