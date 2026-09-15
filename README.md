@@ -2,6 +2,9 @@
 
 A Retrieval-Augmented Generation (RAG) platform that allows users to organize documents into folders, upload files, and interactively chat with their content using vector search and Google Gemini.
 
+<img width="1282" height="657" alt="image" src="https://github.com/user-attachments/assets/905f6dfe-2ce9-49f0-9ba8-f27917ca74e7" />
+
+
 ---
 
 ## 🚀 Features
