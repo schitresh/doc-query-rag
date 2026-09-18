@@ -4,7 +4,6 @@ A Retrieval-Augmented Generation (RAG) platform that allows users to organize do
 
 <img width="1282" height="657" alt="image" src="https://github.com/user-attachments/assets/905f6dfe-2ce9-49f0-9ba8-f27917ca74e7" />
 
-
 ---
 
 ## 🚀 Features
@@ -27,13 +26,47 @@ A Retrieval-Augmented Generation (RAG) platform that allows users to organize do
 - **Database & Vector Search**: [PostgreSQL](https://www.postgresql.org/) with [pgvector](https://github.com/pgvector/pgvector)
 - **Frontend**: [Streamlit](https://streamlit.io/), [HTTPX](https://www.python-httpx.org/)
 
-## 📋 Prerequisites
+---
 
-- **Python**: `3.10+` (tested with Python 3.11/3.12)
+## 🐳 Quick Start with Docker
+
+The easiest way to run the full stack (FastAPI backend, Streamlit frontend, and PostgreSQL with pgvector) without local environment setup:
+
+1. **Configure environment variables:**
+   - Open [env/.env.development.main](file:///Users/User/Dashboard/workspace/doc-query-rag/env/.env.development.main) and set your `GEMINI_API_KEY`:
+     ```bash
+     GEMINI_API_KEY="your_gemini_api_key_here"
+     ```
+
+2. **Start the containers:**
+
+   ```bash
+   docker compose up --build
+   ```
+
+3. **Access the services:**
+   - **Frontend UI (Streamlit)**: [http://localhost:8501](http://localhost:8501)
+   - **Backend API Docs (Swagger)**: [http://localhost:8000/docs](http://localhost:8000/docs)
+   - **Backend Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
+
+4. **Stop the containers:**
+   ```bash
+   docker compose down
+   ```
+
+---
+
+## 💻 Development
+
+Follow these steps to set up and run the project locally for development:
+
+### 1. Prerequisites
+
+- **Python**: `3.10+`
 - **PostgreSQL**: Version `14+` with the **`pgvector`** extension installed
 - **Google Gemini API Key**: [Get an API key from Google AI Studio](https://aistudio.google.com/)
 
-## 📦 Installation
+### 2. Setup Environment & Dependencies
 
 1. **Clone the repository:**
 
@@ -45,56 +78,64 @@ A Retrieval-Augmented Generation (RAG) platform that allows users to organize do
 2. **Create and activate a virtual environment:**
 
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate
+   python -m venv .venv-doc-query-rag
+   source .venv-doc-query-rag/bin/activate
    ```
 
 3. **Install dependencies:**
-
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Ensure PostgreSQL & pgvector are running:**
-   Make sure your PostgreSQL instance is running and the target database exists:
-   ```bash
-   createdb doc_query_db
-   ```
-   _(The backend automatically creates the `vector` extension and required tables on startup)._
+### 3. Configure Environment Variables
 
----
-
-## 🚦 Running the Application
-
-### 1. Start the Backend Server
-
-Export your environment variables and start the FastAPI server with Uvicorn:
+Open [env/.env.development.main](file:///Users/User/Dashboard/workspace/doc-query-rag/env/.env.development.main) and add your `GEMINI_API_KEY`:
 
 ```bash
-# Load environment variables
+GEMINI_API_KEY="your_gemini_api_key_here"
+```
+
+### 4. Database Setup
+
+Ensure PostgreSQL is running and initialize the application database:
+
+```bash
+createdb doc_query_db
+```
+
+_(The backend automatically creates the `vector` extension and required tables on startup)._
+
+### 5. Running the Application
+
+#### A. Start the Backend Server
+
+Load your environment variables and start the FastAPI server with Uvicorn:
+
+```bash
+# Load environment variables & activate venv
 source .envrc
 
 # Start backend server
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-- **API Base URL**: `http://localhost:8000`
-- **Interactive Swagger Docs**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
+- **API Base URL**: [http://localhost:8000](http://localhost:8000)
+- **Interactive Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-### 2. Start the Frontend Server
+#### B. Start the Frontend Server
 
-In a new terminal window (with the virtual environment activated and environment variables loaded):
+In a new terminal window:
 
 ```bash
-# Load environment variables
+# Load environment variables & activate venv
 source .envrc
 
 # Start Streamlit application
 streamlit run frontend/app.py
 ```
 
-- **Frontend UI**: `http://localhost:8501`
+- **Frontend UI**: [http://localhost:8501](http://localhost:8501)
 
 ---
 

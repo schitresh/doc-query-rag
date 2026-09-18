@@ -1,0 +1,29 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+.venv*
+env/
+
+# Environment files with credentials
+*.creds
+.envrc
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Tool caches
+.ruff_cache/
+.pytest_cache/

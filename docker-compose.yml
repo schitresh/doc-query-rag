@@ -1,0 +1,58 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: doc_query_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-doc_query_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-doc_query_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    container_name: doc_query_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - BACKEND_ENV=${BACKEND_ENV:-development}
+      - BACKEND_HOST=${BACKEND_HOST:-0.0.0.0}
+      - BACKEND_PORT=${BACKEND_PORT:-8000}
+      - BACKEND_URL=${BACKEND_URL:-http://localhost:8000}
+      - POSTGRES_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-doc_query_db}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.1-flash-lite}
+      - GEMINI_EMBEDDING_MODEL=${GEMINI_EMBEDDING_MODEL:-gemini-embedding-001}
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    container_name: doc_query_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - BACKEND_URL=http://backend:8000
+    ports:
+      - "8501:8501"
+
+volumes:
+  pgdata:
